@@ -8,6 +8,7 @@ function QuizCard() {
   this.time_progress = document.getElementById("time-progress");
   this.timeProgressAnimationDuration = 5;
   this.time_indicator = document.getElementById("time-indicator");
+  this.nextQuestionBtn = document.getElementById("next-question-btn");
   this.intervalId = 0;
   this.timeOutId = 0;
 }
@@ -16,6 +17,8 @@ QuizCard.prototype.renderQuestion = async function () {
   let question = await this.questionApi.getOneQuestionByNumber(
     this.currentQuestionNumber
   );
+
+  toggleDisableNextQuestionBtn(this.nextQuestionBtn);
 
   this.question_text.innerHTML = `<b>${this.currentQuestionNumber}- </b>${question.text}`;
   for (const key in question.options) {
@@ -50,6 +53,8 @@ function startTime(duration, timeIndicatorElement, quizCard) {
   let clock = timeStatusText.querySelector("span");
 
   clock.textContent = `${duration}`;
+
+  toggleDisableNextQuestionBtn(quizCard.nextQuestionBtn);
 
   quizCard.intervalId = setInterval(function () {
     clock.innerText = duration - 1;
@@ -117,6 +122,12 @@ function addEventListenerWithParams(optionElement, event, ...param) {
     }
 
     quizCard.question_wrapper.classList.add("pointer-events-none");
+  });
+}
+
+function toggleDisableNextQuestionBtn(btn) {
+  btn.classList.toggle("disabled");
+}
   });
 }
 
