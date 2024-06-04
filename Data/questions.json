@@ -1,0 +1,32 @@
+[
+  {
+    "text": "Hangisi dünyanın en büyük okyanusudur?",
+    "options": {
+      "a": "Pasifik Okyanusu",
+      "b": "Atlantik Okyanusu",
+      "c": "Hint Okyanusu",
+      "d": "Arktik Okyanusu"
+    },
+    "answer": "a"
+  },
+  {
+    "text": "Hangisi dünyanın en yüksek dağıdır?",
+    "options": {
+      "a": "Everest",
+      "b": "K2",
+      "c": "Kangchenjunga",
+      "d": "Lhotse"
+    },
+    "answer": "a"
+  },
+  {
+    "text": "Hangi gezegen Güneş Sistemi'ndeki en büyük gezegendir?",
+    "options": {
+      "a": "Jüpiter",
+      "b": "Satürn",
+      "c": "Mars",
+      "d": "Venüs"
+    },
+    "answer": "a"
+  }
+]
