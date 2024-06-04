@@ -1,0 +1,57 @@
+body {
+  height: 100vh;
+}
+
+.card {
+  width: 38%;
+}
+
+.question-clock__wrapper {
+  background-color: #143f68;
+  padding: 1rem;
+  padding-block: 0.5rem;
+}
+
+.question-clock__wrapper > p {
+  margin-bottom: 0;
+}
+
+.question-clock {
+  min-width: 30px;
+  display: inline-block;
+}
+
+.time-progress {
+  height: 0.5rem;
+}
+
+@keyframes time-progress {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.question-option:hover {
+  background-color: #f0a500;
+  color: white;
+}
+
+.correct-answer {
+  background-color: #d4edda;
+  color: #155724;
+}
+.incorrect-answer {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.pointer-events-none{
+    pointer-events: none;
+}
+
+.card-footer > button {
+  padding: 0.4rem;
+}
