@@ -61,8 +61,9 @@ function startTime(duration, timeIndicatorElement, quizCard) {
     duration -= 1;
   }, 1000);
 
-  quizCard.timeOutId =  setTimeout(() => {
+  quizCard.timeOutId = setTimeout(() => {
     clearInterval(quizCard.intervalId);
+    toggleDisableQuestionOptions();
     timeStatusText.textContent = "Time's up";
     timeStatusText.insertAdjacentElement("beforeend", clock);
   }, duration * 1000);
@@ -74,6 +75,8 @@ function addEventListenerWithParams(optionElement, event, ...param) {
   optionElement.addEventListener(event, async function () {
     clearInterval(quizCard.intervalId);
     clearTimeout(quizCard.timeOutId);
+    toggleDisableQuestionOptions();
+
     quizCard.time_progress.style["animation-play-state"] = "paused";
 
     let answer = this.querySelector("span b").textContent.split("")[0];
@@ -128,6 +131,12 @@ function addEventListenerWithParams(optionElement, event, ...param) {
 function toggleDisableNextQuestionBtn(btn) {
   btn.classList.toggle("disabled");
 }
+
+function toggleDisableQuestionOptions() {
+  const allQuestionOptions = document.querySelectorAll(".question-option");
+  console.log(allQuestionOptions);
+  [...allQuestionOptions].forEach((item) => {
+    item.classList.toggle("disabled");
   });
 }
 
