@@ -23,6 +23,7 @@ body {
 
 .time-progress {
   height: 0.5rem;
+  width: 0;
 }
 
 @keyframes time-progress {

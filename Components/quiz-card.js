@@ -3,14 +3,23 @@ import QuestionApi from "../Modules/question-api.js";
 function QuizCard() {
   this.questionApi = new QuestionApi();
   this.currentQuestionNumber = 1;
+  this.timeProgressElementId = "time-progress";
+  this.card = document.getElementById("card");
   this.question_text = document.getElementById("question-text");
   this.question_wrapper = document.getElementById("question__wrapper");
-  this.time_progress = document.getElementById("time-progress");
   this.timeProgressAnimationDuration = 5;
   this.time_indicator = document.getElementById("time-indicator");
   this.nextQuestionBtn = document.getElementById("next-question-btn");
   this.intervalId = 0;
   this.timeOutId = 0;
+
+  if (new.target) {
+    addClickEventToNextQuestionBtn(
+      this.nextQuestionBtn,
+      this.question_wrapper,
+      this
+    );
+  }
 }
 
 QuizCard.prototype.renderQuestion = async function () {
@@ -20,7 +29,17 @@ QuizCard.prototype.renderQuestion = async function () {
 
   toggleDisableNextQuestionBtn(this.nextQuestionBtn);
 
-  this.question_text.innerHTML = `<b>${this.currentQuestionNumber}- </b>${question.text}`;
+  this.card.insertBefore(createTimeProgressElement(this.timeProgressElementId),this.question_wrapper);
+
+  this.question_wrapper.insertAdjacentHTML(
+    "beforeend",
+    `
+    <p class="question-text fs-5">
+      <b>${this.currentQuestionNumber}-</b>
+      ${question.text}
+    </p>  
+  `
+  );
   for (const key in question.options) {
     this.question_wrapper.insertAdjacentHTML(
       "beforeend",
@@ -35,7 +54,7 @@ QuizCard.prototype.renderQuestion = async function () {
     addEventListenerWithParams(element, "click", this);
   });
 
-  this.time_progress.style.animation = `time-progress ${this.timeProgressAnimationDuration}s`;
+  getTimeProgressElement(this.timeProgressElementId).style.animation = `time-progress ${this.timeProgressAnimationDuration}s`;
 
   startTime(this.timeProgressAnimationDuration, this.time_indicator, this);
 };
@@ -77,7 +96,7 @@ function addEventListenerWithParams(optionElement, event, ...param) {
     clearTimeout(quizCard.timeOutId);
     toggleDisableQuestionOptions();
 
-    quizCard.time_progress.style["animation-play-state"] = "paused";
+    getTimeProgressElement(quizCard.timeProgressElementId).style["animation-play-state"] = "paused";
 
     let answer = this.querySelector("span b").textContent.split("")[0];
     let currentQuestion = await quizCard.getCurrentQuestion();
@@ -134,10 +153,43 @@ function toggleDisableNextQuestionBtn(btn) {
 
 function toggleDisableQuestionOptions() {
   const allQuestionOptions = document.querySelectorAll(".question-option");
-  console.log(allQuestionOptions);
   [...allQuestionOptions].forEach((item) => {
     item.classList.toggle("disabled");
   });
+}
+
+function addClickEventToNextQuestionBtn(
+  nextQuestionBtn,
+  question_wrapper,
+  quizCard
+) {
+  nextQuestionBtn.addEventListener("click", function () {
+   getTimeProgressElement(quizCard.timeProgressElementId).remove();
+
+    clearInterval(quizCard.intervalId);
+    clearTimeout(quizCard.timeOutId);
+
+    while (question_wrapper.firstChild) {
+      question_wrapper.firstChild.remove();
+    }
+
+    console.log("Rendering a new question");
+    quizCard.currentQuestionNumber += 1;
+    quizCard.renderQuestion();
+  });
+}
+
+function createTimeProgressElement(timeProgressElementId) {
+  const timeProgress = document.createElement("div");
+
+  timeProgress.id = timeProgressElementId;
+  timeProgress.className = "time-progress bg-warning";
+  
+  return timeProgress;
+}
+
+function getTimeProgressElement(timeProgressElementId){
+  return document.getElementById(timeProgressElementId);
 }
 
 export default QuizCard;
